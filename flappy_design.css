@@ -1,9 +1,7 @@
-body {
-  display: flex;
-  justify-content: center;
-}
 #cnv {
   width: 320px;
-  height: 460px;
+  height: 480px;
   border: 1px solid;
+  margin: 0 auto;
+  display: block;
 }
