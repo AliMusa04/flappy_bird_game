@@ -1,7 +1,7 @@
 #cnv {
-  width: 320px;
-  height: 480px;
   border: 1px solid;
   margin: 0 auto;
   display: block;
+  background-color: aquamarine;
+  background-image: url(./img/flappybirdbg.png);
 }

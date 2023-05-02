@@ -1,123 +1,37 @@
-const canvasElem = document.getElementById("cnv");
-const canvasCont = canvasElem.getContext("2d");
-console.log(canvasElem);
+//BOARD
+let canvasElem;
+let canvasElemHeight = 640;
+let canvasElemWidth = 360;
+let canvasCont;
 
-let frame = 0;
+//BIRD setup
 
-const allImage = new Image();
-allImage.src = "img/sprite.png";
+let birdWidth = 34;
+let birdHeight = 24;
+let birdX = canvasElemWidth / 8;
+let birdY = canvasElemHeight / 2;
+let birdImg;
 
-const bird = {
-  animation: [
-    { sX: 276, sY: 112 },
-    { sX: 276, sY: 139 },
-    { sX: 276, sY: 164 },
-    { sX: 276, sY: 139 },
-  ],
-  x: 50,
-  y: 150,
-  width: 34,
-  height: 26,
-  frame: 0,
-
-  draw: function () {
-    let bird = this.animation[this.frame];
-    canvasCont.drawImage(
-      allImage,
-      bird.sX,
-      bird.sY,
-      this.width,
-      this.height,
-      this.x,
-      this.y,
-      this.width,
-      this.height
-    );
-  },
-};
-const background = {
-  sX: 0,
-  sY: 0,
-  width: 275,
-  height: 226,
-  x: 0,
-  y: canvasElem.height - 130,
-  draw: function () {
-    canvasCont.drawImage(
-      allImage,
-      this.sX,
-      this.sY,
-      this.width,
-      this.height,
-      this.x,
-      this.y,
-      this.width,
-      this.height
-    );
-    canvasCont.drawImage(
-      allImage,
-      this.sX,
-      this.sY,
-      this.width,
-      this.height,
-      this.x + this.width,
-      this.y,
-      this.width,
-      this.height
-    );
-  },
-};
-const foreground = {
-  sX: 276,
-  sY: 0,
-  width: 224,
-  height: 112,
-  x: 0,
-  y: canvasElem.height - 35,
-
-  draw: function () {
-    canvasCont.drawImage(
-      allImage,
-      this.sX,
-      this.sY,
-      this.width,
-      this.height,
-      this.x,
-      this.y,
-      this.width,
-      this.height
-    );
-    canvasCont.drawImage(
-      allImage,
-      this.sX,
-      this.sY,
-      this.width,
-      this.height,
-      this.x + this.width,
-      this.y,
-      this.width,
-      this.height
-    );
-  },
+let bird = {
+  width: birdWidth,
+  height: birdHeight,
+  x: birdX,
+  y: birdY,
 };
 
-function paint() {
-  //SKY COLOR SET
-  canvasCont.fillStyle = "#70c5ce";
-  canvasCont.fillRect(0, 0, canvasElem.width, canvasElem.height);
+window.onload = function () {
+  canvasElem = document.getElementById("cnv");
+  canvasElem.height = canvasElemHeight;
+  canvasElem.width = canvasElemWidth;
+  canvasCont = canvasElem.getContext("2d");
 
-  background.draw();
-  foreground.draw();
-  bird.draw();
-}
+  // canvasCont.fillStyle = "green";
+  // canvasCont.fillRect(bird.x, bird.y, bird.width, bird.height);
 
-function update() {}
+  birdImg = new Image();
+  birdImg.src = "./img/flappybird.png";
 
-function loop() {
-  update();
-  paint();
-  frames++;
-
-  requestAnimationFrame(loop);
-}
-loop();
+  birdImg.onload = function () {
+    canvasCont.drawImage(birdImg, bird.x, bird.y, bird.width, bird.height);
+  };
+};
