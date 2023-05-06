@@ -31,6 +31,8 @@ let bottomPipeImg;
 
 //GAME PHYSIQUE
 let velocityX = -2;
+let velocityY = 0;
+let gravity = 0.3;
 
 window.onload = function () {
   canvasElem = document.getElementById("cnv");
@@ -57,6 +59,7 @@ window.onload = function () {
 
   requestAnimationFrame(update);
   setInterval(createPipe, 1500);
+  canvasElem.addEventListener("click", moveBird);
 };
 
 function update() {
@@ -64,6 +67,8 @@ function update() {
   canvasContxt.clearRect(0, 0, canvasElemWidth, canvasElemHeight);
 
   // draw bird
+  velocityY += gravity;
+  bird.y = Math.max(bird.y + velocityY, 0);
   canvasContxt.drawImage(birdImg, bird.x, bird.y, bird.width, bird.height);
 
   //DRAW PIPE
@@ -99,4 +104,8 @@ function createPipe() {
   };
   pipesArr.push(topPipe);
   pipesArr.push(bottomPipe);
+}
+
+function moveBird() {
+  velocityY = -6;
 }
