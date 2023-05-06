@@ -34,6 +34,8 @@ let velocityX = -2;
 let velocityY = 0;
 let gravity = 0.3;
 
+let gameOver = false;
+
 window.onload = function () {
   canvasElem = document.getElementById("cnv");
   canvasElem.height = canvasElemHeight;
@@ -64,6 +66,9 @@ window.onload = function () {
 
 function update() {
   requestAnimationFrame(update);
+  if (gameOver || bird.y > canvasElem.height) {
+    return;
+  }
   canvasContxt.clearRect(0, 0, canvasElemWidth, canvasElemHeight);
 
   // draw bird
@@ -75,10 +80,16 @@ function update() {
   pipesArr.forEach((pipe) => {
     pipe.x += velocityX;
     canvasContxt.drawImage(pipe.img, pipe.x, pipe.y, pipe.width, pipe.height);
+    if (detectFail(bird, pipe)) {
+      gameOver = true;
+    }
   });
 }
 
 function createPipe() {
+  if (gameOver || bird.y > canvasElem.height) {
+    return;
+  }
   let randomPipeY =
     pipeY - topPipeHeight / 4 - Math.random() * (topPipeHeight / 2);
 
@@ -108,4 +119,13 @@ function createPipe() {
 
 function moveBird() {
   velocityY = -6;
+}
+
+function detectFail(bird, pipe) {
+  return (
+    bird.x < pipe.x + pipe.width &&
+    bird.x + bird.width > pipe.x &&
+    bird.y < pipe.y + pipe.height &&
+    bird.y + bird.height > pipe.y
+  );
 }
