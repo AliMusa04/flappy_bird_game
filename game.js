@@ -33,6 +33,7 @@ let bottomPipeImg;
 let velocityX = -2;
 let velocityY = 0;
 let gravity = 0.3;
+let score = 0;
 
 let gameOver = false;
 
@@ -66,11 +67,14 @@ window.onload = function () {
 
 function update() {
   requestAnimationFrame(update);
-  if (gameOver || bird.y > canvasElem.height) {
+  if (gameOver) {
     return;
   }
   canvasContxt.clearRect(0, 0, canvasElemWidth, canvasElemHeight);
 
+  if (bird.y > canvasElem.height) {
+    gameOver = true;
+  }
   // draw bird
   velocityY += gravity;
   bird.y = Math.max(bird.y + velocityY, 0);
@@ -80,10 +84,27 @@ function update() {
   pipesArr.forEach((pipe) => {
     pipe.x += velocityX;
     canvasContxt.drawImage(pipe.img, pipe.x, pipe.y, pipe.width, pipe.height);
+    if (!pipe.passed && bird.x > pipe.x + pipe.width) {
+      score += 0.5;
+      pipe.passed = true;
+    }
     if (detectFail(bird, pipe)) {
       gameOver = true;
     }
   });
+
+  //CLEAR PIPES
+  while (pipesArr.length > 0 && pipesArr[0].x < -topPipeWidth) {
+    pipesArr.shift();
+  }
+  //SCORE
+  canvasContxt.fillStyle = "white";
+  canvasContxt.font = "45px sans-serif";
+  canvasContxt.fillText(score, 5, 45);
+
+  if (gameOver) {
+    canvasContxt.fillText("GAME OVER", 40, canvasElem.height / 2);
+  }
 }
 
 function createPipe() {
@@ -119,6 +140,14 @@ function createPipe() {
 
 function moveBird() {
   velocityY = -6;
+
+  //RESET
+  if (gameOver) {
+    bird.y = birdY;
+    pipesArr = [];
+    score = 0;
+    gameOver = false;
+  }
 }
 
 function detectFail(bird, pipe) {
